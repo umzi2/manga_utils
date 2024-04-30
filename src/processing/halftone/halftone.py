@@ -9,4 +9,4 @@ class Halftone:
         pass
 
     def run(self, img: np.ndarray) -> np.ndarray:
-        return screentone(img, self.dot_size)
+        return screentone(np.squeeze(img), self.dot_size)
