@@ -1,0 +1,31 @@
+{
+  "in_folder": "test/INPUT",
+  "out_folder": "test/OUTPUT",
+  "max_workers": 4,
+  "processed": [
+    {
+      "type": "sharp",
+      "diapason_white": -1,
+      "diapason_black": -1,
+      "high_input": 255,
+      "low_input": 0,
+      "gamma": 1.0,
+      "cenny": false
+    },
+    {
+      "type": "screentone",
+      "dot_size": 7
+    },
+    {
+      "type": "resize",
+      "size": 2000,
+      "interpolation": "linear",
+      "width": true,
+      "percent": 100,
+      "spread": true,
+      "spread_size": 2800,
+      "color_fix": true,
+      "gamma_correction": false
+    }
+  ]
+}
