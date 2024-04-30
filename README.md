@@ -1,3 +1,12 @@
+quick start:
+```bash
+python3 -m venv .env 
+source .env/bin/activate
+pip install requirements.txt
+python3 main.py
+
+```
+
 ```json
   "in_folder": "test/INPUT",
   "out_folder": "test/OUTPUT",
