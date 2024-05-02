@@ -2,7 +2,7 @@ quick start:
 ```bash
 python3 -m venv .env 
 source .env/bin/activate
-pip install requirements.txt
+pip install -r requirements.txt
 python3 main.py
 
 ```
