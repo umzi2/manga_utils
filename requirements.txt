@@ -1,3 +1,4 @@
 pepeline ~= 0.2.8
 tqdm ~= 4.66.2
 opencv-python ~= 4.9.0.80
+chainner-ext ~= 0.3.10
