@@ -3,6 +3,7 @@ import os
 from src.processing import Sharp, Resize, Halftone
 from pepeline import read, save
 from tqdm.contrib.concurrent import process_map
+from tqdm import tqdm
 from os import cpu_count
 
 PROCESSED_TYPE_DICT = {
@@ -12,7 +13,7 @@ PROCESSED_TYPE_DICT = {
 }
 
 
-class ParProcess:
+class Process:
     def __init__(self, input_file: str):
         with open(input_file, "r") as f:
             data = json.load(f)
@@ -24,6 +25,7 @@ class ParProcess:
             process = PROCESSED_TYPE_DICT[dicts["type"]]
             processed_turn.append(process(dicts))
         self.processed_turn = processed_turn
+        self.paralel = data.get("paralel")
         self.max_workers = data.get("max_workers", min(32, cpu_count() + 4))
 
     def __folder_exists(self):
@@ -40,13 +42,22 @@ class ParProcess:
         ]
 
     def process(self, img_name: str):
-        img = read(f'{self.input_folder}/{img_name}', 0, 0)
-        for process in self.processed_turn:
-            img = process.run(img)
-        img_basic_name = img_name.split(".")[0]
-        save(img, f'{self.output_folder}/{img_basic_name}.png')
+        try:
+            img_folder = os.path.join(self.input_folder, img_name)
+            img = read(img_folder, 0, 0)
+            for process in self.processed_turn:
+                img = process.run(img)
+            img_basic_name = img_name.split(".")[0] + ".png"
+            out_folder = os.path.join(self.output_folder, img_basic_name)
+            save(img, out_folder)
+        except Exception as e:
+            print(e)
 
     def run(self):
         self.__folder_exists()
         files = self.__file_list()
-        process_map(self.process, files, max_workers=self.max_workers)
+        if self.paralel:
+            process_map(self.process, files, max_workers=self.max_workers)
+        else:
+            for img_name in tqdm(files):
+                self.process(img_name)

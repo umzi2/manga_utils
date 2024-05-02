@@ -1,4 +1,4 @@
-from src.utils.start_paralel_process import ParProcess
+from src.utils.start_process import Process
 
-gg = ParProcess("config.json")
+gg = Process("config.json")
 gg.run()

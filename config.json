@@ -1,16 +1,16 @@
 {
   "in_folder": "test/INPUT",
   "out_folder": "test/OUTPUT",
-  "max_workers": 4,
+  "paralel": false,
   "processed": [
     {
       "type": "sharp",
-      "diapason_white": -1,
+      "diapason_white": 3,
       "diapason_black": -1,
-      "high_input": 255,
-      "low_input": 0,
+      "high_input": 250,
+      "low_input": 4,
       "gamma": 1.0,
-      "cenny": false
+      "cenny": true
     },
     {
       "type": "screentone",
@@ -27,5 +27,6 @@
       "color_fix": true,
       "gamma_correction": false
     }
+
   ]
 }
