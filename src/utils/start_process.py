@@ -2,9 +2,8 @@ import json
 import os
 from src.processing import Sharp, Resize, Halftone
 from pepeline import read, save
-from tqdm.contrib.concurrent import process_map
+from tqdm.contrib.concurrent import thread_map, process_map
 from tqdm import tqdm
-from os import cpu_count
 
 PROCESSED_TYPE_DICT = {
     "sharp": Sharp,
@@ -25,8 +24,8 @@ class Process:
             process = PROCESSED_TYPE_DICT[dicts["type"]]
             processed_turn.append(process(dicts))
         self.processed_turn = processed_turn
-        self.paralel = data.get("paralel")
-        self.max_workers = data.get("max_workers", min(32, cpu_count() + 4))
+        self.process_map = data.get("process_map", "process")
+        self.max_workers = data.get("max_workers")
 
     def __folder_exists(self):
         if not os.path.exists(self.output_folder):
@@ -47,7 +46,8 @@ class Process:
             img = read(img_folder, 0, 0)
             for process in self.processed_turn:
                 img = process.run(img)
-            img_basic_name = img_name.split(".")[0] + ".png"
+            img_basic_name = ".".join(img_name.split(".")[:-1]) + ".png"
+
             out_folder = os.path.join(self.output_folder, img_basic_name)
             save(img, out_folder)
         except Exception as e:
@@ -56,8 +56,10 @@ class Process:
     def run(self):
         self.__folder_exists()
         files = self.__file_list()
-        if self.paralel:
+        if self.process_map == "process":
             process_map(self.process, files, max_workers=self.max_workers)
+        elif self.process_map == "thread":
+            thread_map(self.process, files, max_workers=self.max_workers)
         else:
             for img_name in tqdm(files):
                 self.process(img_name)

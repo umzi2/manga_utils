@@ -1,7 +1,7 @@
 {
   "in_folder": "test/INPUT",
   "out_folder": "test/OUTPUT",
-  "paralel": false,
+  "process_map": "process",
   "processed": [
     {
       "type": "sharp",
@@ -27,6 +27,7 @@
       "color_fix": true,
       "gamma_correction": false
     }
+    
 
   ]
 }
