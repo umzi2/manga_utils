@@ -56,7 +56,7 @@ class Resize:
                 new_width = width_k
                 new_height = self.size
         img = resize(img.astype(np.float32), (int(new_width), int(new_height)), interpolation_map[self.interpolation],
-                     gamma_correction=self.gamma_correction)
+                     gamma_correction=self.gamma_correction).squeeze()
         if self.color_fix:
             img = fast_color_level(img, in_high=250)
         return img
